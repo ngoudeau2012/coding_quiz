@@ -1,0 +1,35 @@
+body{
+    font-family: 'Nunito', sans-serif;
+}
+.high-score{
+    text-align: left;
+    font-weight: bold;
+    color: purple;
+    font-size: 1.3rem;
+}
+#timer{
+    text-align: right;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+.question{
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
+.description{
+    text-align: center;
+    font-size: 1.1rem;
+}
+.btn{
+    background-color: purple;
+    color: white;
+    padding: 1px 4px;
+    width: 20%;
+    margin: auto;
+    vertical-align: middle;
+}
+.ansbtn{
+    display: block;
+}
+
