@@ -25,6 +25,9 @@ var questionsArr = [{
 }]
 var questionNumber = 0
 var timer = 60;
+var userName = null;
+var userScore = null;
+
 highScoreEl.addEventListener("click",function(){
     highScore()
 })
@@ -49,16 +52,81 @@ function questions(){
         ans.addEventListener("click",function(){
             questionNumber++;
             answerEl.innerHTML = "";
+
+            (this)
             if(questionNumber < 5){
                 questions();
             }else{
-                highScore();
+                userScoreScreen();
+                // highScore();
             }
         })
     })  
 }
-function highScore(){
+    var userInput;
+function userScoreScreen(){
+    var hsLine = document.createElement("hr");
+    var userScoreText = document.createElement("p")
+    userInput = document.createElement("input")
+    var submitBtn = document.createElement("button");
 
+
+    questionEl.textContent = "You're Score is " + timer
+    questionEl.appendChild(hsLine);
+
+    answerEl.appendChild(userScoreText);
+    userScoreText.textContent = "Please enter your name below to save your score!!"
+    answerEl.style = "text-align: center"
+
+    answerEl.appendChild(userInput);
+    answerEl.appendChild(submitBtn);
+    submitBtn.textContent = "Submit"
+    submitBtn.setAttribute("class", "submitBtn btn")
+    
+    saveScore();
+}
+
+function saveScore(){
+    document.querySelector(".submitBtn").addEventListener("click", function(){
+        userName = userInput.value;
+        userScore = timer;
+
+        var oldUsers = JSON.parse(localStorage.getItem("user"));
+        console.log(oldUsers)
+        var userArr = []
+        var userObj = {
+            "Name": userName,
+            "Score": userScore
+        }
+        if(oldUsers == null) oldUsers = []
+        oldUsers.push(userObj)
+
+        var userObjStr = JSON.stringify(oldUsers);
+        localStorage.setItem("user", userObjStr);
+
+        highScore();
+    })
+}
+
+function highScore(){
+    var hsLine = document.createElement("hr");
+    questionEl.textContent = "High Scores";
+    questionEl.append(hsLine);
+    answerEl.innerHTML = "";
+
+    var hsName = document.createElement("p")
+    var hsUsers = JSON.parse(localStorage.getItem("user"));
+
+    for(i = 0; i < hsUsers.length; i++){
+        var userInfo = answerEl.appendChild(document.createElement("p"));
+        userInfo.textContent = hsUsers[i].Name + " " + " " + hsUsers[i].Score;
+    }
+    console.log(hsUsers);
+
+    // var highScoreCard = document.createElement("<div>");
+    // highScoreCard.setAttribute("id", "hsCard")
+    // highScoreCard.setAttribute("class", "card")
+    // highScoreCard.createElement()
 }
 function startTimer() {
     var timerInterval = setInterval(function() {
@@ -66,12 +134,13 @@ function startTimer() {
       timerEl.textContent ="Time: " + timer;
   
       if(timer === 0) {
-        clearInterval(timerInterval);
         highScore();
+      } else if(questionNumber === 5){
+        clearInterval(timerInterval);
       }
   
     }, 1000);
   }
 
-
+// document.querySelector(".high-score").addEventListener("click", highScore(event));
 

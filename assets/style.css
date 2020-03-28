@@ -25,9 +25,9 @@ body{
     background-color: purple;
     color: white;
     padding: 1px 4px;
-    width: 20%;
-    margin: auto;
-    vertical-align: middle;
+}
+.submitBtn{
+    margin-left: 10px;
 }
 .ansbtn{
     display: block;
