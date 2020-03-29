@@ -2,6 +2,8 @@ var questionEl = document.querySelector(".question");
 var answerEl = document.querySelector(".answer");
 var timerEl = document.querySelector("#timer");
 var highScoreEl = document.querySelector(".high-score");
+var highScoreModalEl = document.querySelector(".high-score-modal")
+var modalEl = document.querySelector(".modal")
 var questionsArr = [{
     question: "Question 1",
     rightAnswer: "A2",
@@ -58,7 +60,7 @@ function questions(){
                 questions();
             }else{
                 userScoreScreen();
-                // highScore();
+               
             }
         })
     })  
@@ -69,6 +71,7 @@ function userScoreScreen(){
     var userScoreText = document.createElement("p")
     userInput = document.createElement("input")
     var submitBtn = document.createElement("button");
+    var resetBtn = document.createElement("button");
 
 
     questionEl.textContent = "You're Score is " + timer
@@ -83,7 +86,13 @@ function userScoreScreen(){
     submitBtn.textContent = "Submit"
     submitBtn.setAttribute("class", "submitBtn btn")
     
+    answerEl.appendChild(resetBtn);
+    resetBtn.textContent = "Reset"
+    resetBtn.setAttribute("class", "resetBtn btn")
+    resetBtn.style.margin = "10px"
+
     saveScore();
+    resetQuiz();
 }
 
 function saveScore(){
@@ -105,29 +114,40 @@ function saveScore(){
         localStorage.setItem("user", userObjStr);
 
         highScore();
+        
+    })
+}
+
+function resetQuiz(){
+    document.querySelector(".resetBtn").addEventListener("click", function(){
+        location.reload();
     })
 }
 
 function highScore(){
+    modalEl.style.display = "block";
     var hsLine = document.createElement("hr");
-    questionEl.textContent = "High Scores";
-    questionEl.append(hsLine);
-    answerEl.innerHTML = "";
+    highScoreModalEl.prepend(hsLine);
+    highScoreModalEl.innerHTML = "";
 
     var hsName = document.createElement("p")
     var hsUsers = JSON.parse(localStorage.getItem("user"));
 
     for(i = 0; i < hsUsers.length; i++){
-        var userInfo = answerEl.appendChild(document.createElement("p"));
+        var userInfo = highScoreModalEl.appendChild(document.createElement("p"));
         userInfo.textContent = hsUsers[i].Name + " " + " " + hsUsers[i].Score;
     }
-    console.log(hsUsers);
+    
+    var closeBtnEl = document.createElement("button")
+    closeBtnEl.textContent = "Close"
+    highScoreModalEl.append(closeBtnEl)
+    closeBtnEl.setAttribute("class", "btn close-button")
 
-    // var highScoreCard = document.createElement("<div>");
-    // highScoreCard.setAttribute("id", "hsCard")
-    // highScoreCard.setAttribute("class", "card")
-    // highScoreCard.createElement()
+    document.querySelector(".close-button").addEventListener("click",function(){
+        modalEl.style.display = "none"
+    })
 }
+
 function startTimer() {
     var timerInterval = setInterval(function() {
       timer--;
@@ -141,6 +161,4 @@ function startTimer() {
   
     }, 1000);
   }
-
-// document.querySelector(".high-score").addEventListener("click", highScore(event));
 
