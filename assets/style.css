@@ -30,8 +30,10 @@ body{
 .submitBtn{
     margin-left: 10px;
 }
-.ansbtn{
+.ansbtn,
+main {
     display: block;
+    margin: 10px;
 }
 .modal,
 .card-body{

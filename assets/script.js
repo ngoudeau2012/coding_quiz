@@ -4,26 +4,32 @@ var timerEl = document.querySelector("#timer");
 var highScoreEl = document.querySelector(".high-score");
 var highScoreModalEl = document.querySelector(".high-score-modal")
 var modalEl = document.querySelector(".modal")
+var mainEl = document.querySelector(".main")
 var questionsArr = [{
-    question: "Question 1",
-    rightAnswer: "A2",
-    answers: ["A1","A2","A3","A4"],
+    question: "Which of the following elements is self closing",
+    rightAnswer: "1",
+    answers: ["<img>","<h1>","<div>","<a>"],
+    answersValue: ["1","0","0","0"]
 },{
-    question: "Question 2",
-    rightAnswer: "A2",
-    answers: ["A5","A2","A3","A4"]
+    question: "The conditions in an if/else statement is enclosed within _____.",
+    rightAnswer: "1",
+    answers: ["quotation marks","curly brackets","parentheses","square brackets"],
+    answersValue: ["0","0","1","0"]
 },{
-    question: "Question 3",
-    rightAnswer: "A2",
-    answers: ["A9","A2","A3","A4"]
+    question: "A very useful tool used during development and debugging for printing content to the debugger is:",
+    rightAnswer: "1",
+    answers: ["JavaScript","console log","for loops","terminal/bash"],
+    answersValue: ["0","1","0","0"]
 },{
-    question: "Question 4",
-    rightAnswer: "A2",
-    answers: ["A13","A2","A3","A4"]
+    question: "Commonly used data types DO NOT include:",
+    rightAnswer: "1",
+    answers: ["alerts","strings","booleans","numbers"],
+    answersValue: ["1","0","0","0"]
 },{
-    question: "Question 5",
-    rightAnswer: "A2",
-    answers: ["A17","A2","A3","A4"]
+    question: "Which of the following IS NOT a coding language?",
+    rightAnswer: "1",
+    answers: ["HTML","JavaScript","CSS","JQuery"],
+    answersValue: ["0","0","0","1"]
 }]
 var questionNumber = 0
 var timer = 60;
@@ -48,10 +54,20 @@ function questions(){
         var button = document.createElement("button");
         answerEl.appendChild(button);
         button.setAttribute("class", "ansbtn btn answerChoice");
-        button.textContent = questionsArr[questionNumber].answers[i];
+        button.textContent = questionsArr[questionNumber].answers[i]
+        button.setAttribute("value", questionsArr[questionNumber].answersValue[i]);
     }
     document.querySelectorAll(".answerChoice").forEach(ans => { 
         ans.addEventListener("click",function(){
+            var answerChoice = event.target.value;
+            var correctAnswer = questionsArr[questionNumber].rightAnswer
+            console.log(answerChoice !== correctAnswer);
+            
+            if(answerChoice !== correctAnswer){
+                timer = timer - 10
+                console.log(timer - 10)
+                timerEl.textContent ="Time: " + timer;
+            }
             questionNumber++;
             answerEl.innerHTML = "";
 
@@ -126,17 +142,18 @@ function resetQuiz(){
 
 function highScore(){
     modalEl.style.display = "block";
+    // mainEl.style.display = "none";
     var hsLine = document.createElement("hr");
     highScoreModalEl.prepend(hsLine);
     highScoreModalEl.innerHTML = "";
 
     var hsName = document.createElement("p")
-    var hsUsers = JSON.parse(localStorage.getItem("user"));
+    var hsUsers = JSON.parse(localStorage.getItem("user")) || [];
 
     for(i = 0; i < hsUsers.length; i++){
         var userInfo = highScoreModalEl.appendChild(document.createElement("p"));
         userInfo.textContent = hsUsers[i].Name + " " + " " + hsUsers[i].Score;
-    }
+        }
     
     var closeBtnEl = document.createElement("button")
     closeBtnEl.textContent = "Close"
@@ -145,7 +162,9 @@ function highScore(){
 
     document.querySelector(".close-button").addEventListener("click",function(){
         modalEl.style.display = "none"
-    })
+        mainEl.style.display = "block"
+    });
+    
 }
 
 function startTimer() {
@@ -155,6 +174,7 @@ function startTimer() {
   
       if(timer === 0) {
         highScore();
+        clearInterval(timerInterval)
       } else if(questionNumber === 5){
         clearInterval(timerInterval);
       }
